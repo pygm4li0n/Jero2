@@ -160,6 +160,7 @@
             align-items: baseline;
             gap: 2px;
             color: var(--white);
+            white-space: nowrap;
         }
         .logo-wordmark .outline {
             -webkit-text-stroke: 1.5px var(--white);
@@ -1086,6 +1087,10 @@
             .about-title {
                 font-size: 2.2rem;
             }
+            /* Ajuste footer logo más pequeño en mobile */
+            .footer-logo {
+                font-size: 1.17rem; /* 10% menos que 1.3rem */
+            }
         }
         @media (max-width: 480px) {
             .hero-left {
@@ -1126,6 +1131,10 @@
             .logo-wordmark {
                 font-size: 0.9rem;
                 letter-spacing: 1px;
+            }
+            /* Asegurar que el logo de header sea visible en móviles pequeños */
+            .logo-img {
+                height: 30px;
             }
         }
     </style>
