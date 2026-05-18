@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JeroSneakers — Diseño & Moda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;500;600;700;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #050505;
+            --deep: #0A0A0A;
+            --charcoal: #111111;
+            --dark-card: #1A1A1A;
+            --dark-elevated: #222222;
+            --border-dark: #2C2C2C;
+            --white: #FFFFFF;
+            --text-bright: #F5F5F5;
+            --text-soft: #C5C0BA;
+            --text-muted: #8A8580;
+            --rust: #D94A1A;
+            --rust-glow: #F05A2A;
+            --rust-deep: #B33A0F;
+            --accent: #E8A87C;
+            --accent-soft: #D49A6C;
+            --shadow-glow: 0 0 80px rgba(217, 74, 26, 0.18);
+            --shadow-card: 0 2px 24px rgba(0, 0, 0, 0.6);
+            --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.7);
+            --radius-sm: 6px;
+            --radius: 10px;
+            --radius-lg: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--black);
+            color: var(--text-bright);
+            font-family: 'DM Sans', 'Barlow Condensed', sans-serif;
+            overflow-x: hidden;
+            cursor: none;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* CURSOR ÉPICO */
+        .cursor {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--rust-glow);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.16s cubic-bezier(0.22, 0.61, 0.36, 1), background 0.16s ease, box-shadow 0.16s ease;
+            background: transparent;
+            box-shadow: 0 0 0px transparent;
+        }
+        .cursor.hover {
+            transform: scale(3.2);
+            background: rgba(240, 90, 42, 0.25);
+            border-color: var(--rust-glow);
+            box-shadow: 0 0 25px rgba(240, 90, 42, 0.6);
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            body {
+                cursor: auto;
+            }
+            .cursor {
+                display: none;
+            }
+        }
+
+        /* GLOBAL TEXTURE: noise + subtle jaguar hint */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E"),
+                radial-gradient(circle at 15% 25%, rgba(255,255,255,0.08) 2px, transparent 2px),
+                radial-gradient(circle at 35% 20%, rgba(255,255,255,0.06) 2.4px, transparent 2.4px),
+                radial-gradient(circle at 28% 38%, rgba(255,255,255,0.07) 1.6px, transparent 1.6px),
+                radial-gradient(circle at 45% 45%, rgba(255,255,255,0.05) 2.8px, transparent 2.8px),
+                radial-gradient(circle at 62% 30%, rgba(255,255,255,0.08) 2.2px, transparent 2.2px),
+                radial-gradient(circle at 78% 55%, rgba(255,255,255,0.06) 2.5px, transparent 2.5px),
+                radial-gradient(circle at 10% 65%, rgba(255,255,255,0.07) 2px, transparent 2px),
+                radial-gradient(circle at 55% 70%, rgba(255,255,255,0.05) 2.3px, transparent 2.3px),
+                radial-gradient(circle at 88% 18%, rgba(255,255,255,0.08) 1.9px, transparent 1.9px),
+                radial-gradient(circle at 40% 85%, rgba(255,255,255,0.06) 2.6px, transparent 2.6px);
+            background-size: 280px 280px, 120px 120px;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.85;
+        }
+
+        /* SUBTLE VIGNETTE */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 999;
+            background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.65) 100%);
+            opacity: 0.8;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 14px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(8, 8, 8, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 10px;
+        }
+        .logo-img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: brightness(1.1) drop-shadow(0 0 12px rgba(217,74,26,0.4));
+            flex-shrink: 0;
+        }
+        .logo-link:hover .logo-img {
+            transform: scale(1.05);
+            filter: brightness(1.3) drop-shadow(0 0 22px rgba(217,74,26,0.6));
+        }
+        .logo-wordmark {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            color: var(--white);
+        }
+        .logo-wordmark .outline {
+            -webkit-text-stroke: 1.5px var(--white);
+            color: transparent;
+        }
+        .logo-wordmark .accent {
+            color: var(--rust-glow);
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        nav a {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.66rem;
+            color: var(--text-soft);
+            text-decoration: none;
+            padding: 8px 16px;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            border-radius: 20px;
+            transition: all 0.28s ease;
+            position: relative;
+        }
+        nav a:hover {
+            color: var(--white);
+            background: rgba(255,255,255,0.05);
+            text-shadow: 0 0 18px rgba(232,168,124,0.5);
+        }
+        nav a.nav-cta {
+            background: var(--rust);
+            color: #fff;
+            border-radius: 20px;
+            padding: 9px 18px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            box-shadow: 0 0 20px rgba(217,74,26,0.25);
+        }
+        nav a.nav-cta:hover {
+            background: var(--rust-glow);
+            color: #fff;
+            box-shadow: 0 0 35px rgba(240,90,42,0.5);
+            text-shadow: none;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+            background: var(--deep);
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 120px 50px 80px 60px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            color: var(--rust-glow);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.15s forwards;
+            text-shadow: 0 0 30px rgba(240,90,42,0.5);
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4.5rem, 9vw, 8.5rem);
+            line-height: 0.86;
+            color: var(--white);
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.3s forwards;
+            letter-spacing: -1px;
+            text-shadow: 0 4px 80px rgba(0,0,0,0.5);
+        }
+        .hero-title .outline {
+            -webkit-text-stroke: 2px var(--white);
+            color: transparent;
+            text-shadow: none;
+        }
+        .hero-title .accent {
+            color: var(--rust-glow);
+            text-shadow: 0 0 60px rgba(240,90,42,0.6);
+        }
+
+        .hero-sub {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--accent-soft);
+            margin-top: 20px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.45s forwards;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 14px;
+            margin-top: 36px;
+            opacity: 0;
+            animation: fadeUp 0.7s ease 0.6s forwards;
+        }
+
+        .btn-primary {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: var(--rust);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            cursor: none;
+            transition: all 0.28s ease;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 30px;
+            font-weight: 500;
+            box-shadow: 0 0 35px rgba(217,74,26,0.3);
+        }
+        .btn-primary:hover {
+            background: var(--rust-glow);
+            transform: translateY(-3px);
+            box-shadow: 0 0 55px rgba(240,90,42,0.6), 0 12px 28px rgba(0,0,0,0.6);
+        }
+
+        .btn-outline {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid rgba(255,255,255,0.3);
+            padding: 15px 30px;
+            cursor: none;
+            transition: all 0.28s ease;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 30px;
+            font-weight: 500;
+        }
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-3px);
+            background: rgba(232,168,124,0.06);
+            box-shadow: 0 0 35px rgba(232,168,124,0.2);
+        }
+
+        .hero-right {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 35% 45%, #1A0E08 0%, #0A0A0A 55%, #050505 100%);
+        }
+
+        .hero-glow {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(80px);
+        }
+        .hero-glow.g1 {
+            width: 320px;
+            height: 320px;
+            background: rgba(240,90,42,0.14);
+            top: 10%;
+            right: 15%;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+        .hero-glow.g2 {
+            width: 200px;
+            height: 200px;
+            background: rgba(232,168,124,0.09);
+            bottom: 20%;
+            left: 10%;
+            animation: pulseGlow 5s ease-in-out 1.5s infinite;
+        }
+        .hero-glow.g3 {
+            width: 180px;
+            height: 180px;
+            background: rgba(240,90,42,0.07);
+            top: 50%;
+            right: 25%;
+            animation: pulseGlow 6s ease-in-out 2s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .hero-bg-text {
+            position: absolute;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 20vw;
+            color: rgba(255,255,255,0.02);
+            white-space: nowrap;
+            user-select: none;
+            z-index: 0;
+            letter-spacing: -4px;
+            pointer-events: none;
+            text-shadow: 0 0 140px rgba(240,90,42,0.08);
+        }
+
+        .hero-logo-main {
+            width: 65%;
+            max-width: 420px;
+            position: relative;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 0.9s ease 0.8s forwards, floatEpic 5s ease-in-out 1.5s infinite;
+            filter: drop-shadow(0 0 60px rgba(240,90,42,0.3)) drop-shadow(0 30px 70px rgba(0,0,0,0.7));
+            object-fit: contain;
+        }
+
+        @keyframes floatEpic {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-16px) scale(1.04); }
+        }
+
+        .hero-line {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 1px;
+            height: 70px;
+            background: linear-gradient(to bottom, transparent, var(--white));
+            animation: pulse 2.5s ease infinite;
+            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            background: linear-gradient(135deg, #1A0A04 0%, #1C0D06 50%, #140904 100%);
+            border-top: 1px solid rgba(217,74,26,0.25);
+            border-bottom: 1px solid rgba(217,74,26,0.2);
+            padding: 16px 0;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 5;
+            box-shadow: inset 0 0 50px rgba(217,74,26,0.08);
+        }
+        .stats-bar::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.008) 3px, rgba(255,255,255,0.008) 6px);
+            pointer-events: none;
+        }
+
+        .ticker {
+            display: flex;
+            gap: 50px;
+            animation: ticker 18s linear infinite;
+        }
+        .stat {
+            display: flex;
+            align-items: baseline;
+            gap: 7px;
+            white-space: nowrap;
+        }
+        .stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 25px rgba(255,255,255,0.3);
+        }
+        .stat-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.56rem;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.75);
+            text-transform: uppercase;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* CATALOG */
+        #catalogo {
+            padding: 100px 60px;
+            position: relative;
+            background: var(--charcoal);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            line-height: 0.92;
+            color: var(--white);
+            text-shadow: 0 2px 40px rgba(0,0,0,0.5);
+        }
+        .section-title .line2 {
+            -webkit-text-stroke: 1.5px var(--accent);
+            color: transparent;
+            display: block;
+            text-shadow: none;
+        }
+
+        .section-note {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            text-align: right;
+            line-height: 1.6;
+        }
+
+        /* FILTER TABS */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.63rem;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            padding: 10px 22px;
+            border: 1.5px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: var(--text-soft);
+            cursor: none;
+            transition: all 0.28s ease;
+            border-radius: 25px;
+            font-weight: 500;
+        }
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--rust);
+            border-color: var(--rust);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(217,74,26,0.4);
+        }
+
+        /* GRID */
+        .sneaker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 18px;
+        }
+
+        .sneaker-card {
+            background: var(--dark-card);
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+            transition: all 0.38s cubic-bezier(0.22, 0.61, 0.36, 1);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: var(--shadow-card);
+        }
+        .sneaker-card:hover {
+            transform: translateY(-8px);
+            z-index: 10;
+            box-shadow: var(--shadow-lg), 0 0 45px rgba(217,74,26,0.15);
+            border-color: rgba(217,74,26,0.3);
+        }
+
+        .card-img-wrap {
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            position: relative;
+            background: #1E1E1E;
+        }
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: brightness(0.95) contrast(1.05);
+        }
+        .sneaker-card:hover .card-img-wrap img {
+            transform: scale(1.08);
+            filter: brightness(1.05) contrast(1.1);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.53rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            z-index: 2;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .badge-new {
+            background: var(--rust);
+            color: #fff;
+            box-shadow: 0 0 18px rgba(217,74,26,0.5);
+        }
+        .badge-used {
+            background: rgba(30,30,30,0.9);
+            color: var(--accent);
+            border: 1px solid rgba(232,168,124,0.35);
+            backdrop-filter: blur(4px);
+        }
+
+        .card-info {
+            padding: 18px 20px;
+        }
+
+        .card-brand {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.56rem;
+            letter-spacing: 2.5px;
+            color: var(--rust-glow);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .card-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 0.5px;
+            color: var(--white);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .card-price {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.6rem;
+            color: var(--accent);
+            letter-spacing: 0.5px;
+        }
+        .card-size {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .card-cta {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--rust);
+            color: #fff;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            padding: 13px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            cursor: none;
+            text-decoration: none;
+            display: block;
+            font-weight: 500;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            box-shadow: 0 -4px 25px rgba(217,74,26,0.4);
+        }
+        .sneaker-card:hover .card-cta {
+            transform: translateY(0);
+        }
+
+        /* ABOUT */
+        #nosotros {
+            padding: 100px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center;
+            background: var(--deep);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #nosotros::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px;
+            height: 700px;
+            background: radial-gradient(circle, rgba(240,90,42,0.05) 0%, transparent 65%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+
+        #nosotros::after {
+            content: 'JERO';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 18vw;
+            color: rgba(255,255,255,0.015);
+            pointer-events: none;
+            letter-spacing: -3px;
+            user-select: none;
+            text-shadow: 0 0 120px rgba(240,90,42,0.05);
+        }
+
+        .about-visual {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+        .about-logo-wrap {
+            width: 80%;
+            max-width: 320px;
+            animation: floatEpic 5s ease-in-out infinite;
+            filter: drop-shadow(0 0 50px rgba(240,90,42,0.25)) drop-shadow(0 20px 50px rgba(0,0,0,0.6));
+            position: relative;
+        }
+        .about-logo-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -30px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(240,90,42,0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+        .about-logo-wrap img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .about-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 4px;
+            color: var(--rust-glow);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            text-shadow: 0 0 35px rgba(240,90,42,0.5);
+        }
+
+        .about-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.8rem, 5vw, 4.2rem);
+            line-height: 0.9;
+            margin-bottom: 24px;
+            color: var(--white);
+            text-shadow: 0 2px 50px rgba(0,0,0,0.6);
+        }
+        .about-title .outline {
+            -webkit-text-stroke: 1.5px var(--white);
+            color: transparent;
+            text-shadow: none;
+        }
+        .about-title .accent {
+            color: var(--rust-glow);
+        }
+
+        .about-body {
+            font-size: 0.95rem;
+            font-weight: 400;
+            line-height: 1.75;
+            color: var(--text-soft);
+            margin-bottom: 20px;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .about-body strong {
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .about-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.54rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 7px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-soft);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            transition: all 0.25s ease;
+        }
+        .tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: rgba(232,168,124,0.05);
+            box-shadow: 0 0 18px rgba(232,168,124,0.15);
+        }
+
+        /* CONTACT */
+        #contacto {
+            padding: 100px 60px;
+            text-align: center;
+            position: relative;
+            background: var(--charcoal);
+            overflow: hidden;
+        }
+        #contacto::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(240,90,42,0.06) 0%, transparent 65%);
+            pointer-events: none;
+            border-radius: 50%;
+        }
+
+        .contact-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(4rem, 8vw, 7rem);
+            line-height: 0.88;
+            margin-bottom: 16px;
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 4px 70px rgba(0,0,0,0.6);
+        }
+        .contact-title span {
+            -webkit-text-stroke: 2px var(--rust-glow);
+            color: transparent;
+            text-shadow: none;
+        }
+
+        .contact-sub {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 44px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-link {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.82rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 20px 42px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 36px;
+            font-weight: 500;
+            border: none;
+            color: #fff;
+            min-width: 220px;
+            justify-content: center;
+        }
+        .contact-link svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+        .contact-link.ig {
+            background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+            box-shadow: 0 8px 28px rgba(225,48,108,0.4);
+        }
+        .contact-link.ig:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 12px 38px rgba(225,48,108,0.6);
+            transform: translateY(-3px);
+        }
+        .contact-link.wa {
+            background: #25D366;
+            box-shadow: 0 8px 28px rgba(37,211,102,0.4);
+        }
+        .contact-link.wa:hover {
+            filter: brightness(1.15);
+            box-shadow: 0 12px 38px rgba(37,211,102,0.6);
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 28px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--black);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .footer-logo {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            color: var(--white);
+        }
+        .footer-logo span {
+            color: var(--rust);
+        }
+        .footer-copy {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .footer-ig {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.53rem;
+            letter-spacing: 1.5px;
+            color: var(--rust-glow);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .footer-ig:hover {
+            color: var(--accent);
+            text-shadow: 0 0 15px rgba(232,168,124,0.5);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes floatEpic {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-16px) scale(1.04); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        /* SCROLL REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(36px);
+            transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .hero-left {
+                padding: 110px 28px 40px;
+            }
+            .hero-right {
+                display: none;
+            }
+            #nosotros {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .about-visual {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            .about-logo-wrap {
+                max-width: 220px;
+            }
+            .section-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            .section-note {
+                text-align: left;
+            }
+            .contact-link {
+                font-size: 0.75rem;
+                padding: 16px 28px;
+                min-width: 180px;
+            }
+            .contact-link svg {
+                width: 20px;
+                height: 20px;
+            }
+            .logo-wordmark {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+            }
+        }
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+            nav a {
+                font-size: 0.58rem;
+                padding: 6px 10px;
+                letter-spacing: 1px;
+            }
+            nav a.nav-cta {
+                padding: 7px 14px;
+            }
+            .logo-img {
+                height: 32px;
+            }
+            .logo-wordmark {
+                font-size: 1rem;
+            }
+            #catalogo, #nosotros, #contacto, footer {
+                padding: 50px 20px;
+            }
+            .stats-bar {
+                padding: 12px 0;
+            }
+            .stat-num {
+                font-size: 1.5rem;
+            }
+            .stat-label {
+                font-size: 0.48rem;
+            }
+            .ticker {
+                gap: 30px;
+            }
+            .sneaker-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 12px;
+            }
+            .contact-title {
+                font-size: 3rem;
+            }
+            .hero-title {
+                font-size: 3.5rem;
+            }
+            footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 8px;
+            }
+            .contact-link {
+                padding: 14px 24px;
+                font-size: 0.68rem;
+                min-width: 160px;
+            }
+            .contact-link svg {
+                width: 18px;
+                height: 18px;
+            }
+            .about-logo-wrap {
+                max-width: 200px;
+            }
+            .about-title {
+                font-size: 2.2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-left {
+                padding: 100px 18px 30px;
+            }
+            .hero-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-primary, .btn-outline {
+                text-align: center;
+                padding: 14px 24px;
+                font-size: 0.66rem;
+            }
+            .sneaker-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .filters {
+                gap: 6px;
+            }
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.56rem;
+                letter-spacing: 1px;
+            }
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-link {
+                width: 100%;
+                justify-content: center;
+            }
+            .about-logo-wrap {
+                max-width: 180px;
+            }
+            .logo-wordmark {
+                font-size: 0.9rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor" id="cursor"></div>
+
+    <!-- HEADER -->
+    <header>
+        <a href="#" class="logo-link">
+            <img src="https://i.postimg.cc/0NLTRD5y/logo222.png" alt="JeroSneakers Logo" class="logo-img" onerror="this.style.display='none';">
+            <span class="logo-wordmark">
+                JERO<span class="outline">SNEAK</span><span class="accent">ERS</span>
+            </span>
+        </a>
+        <nav>
+            <a href="#catalogo">Catálogo</a>
+            <a href="#nosotros">Nosotros</a>
+            <a href="#contacto" class="nav-cta">Contacto</a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-left">
+            <p class="hero-tag">// Diseño & Moda — Sneaker Culture</p>
+            <h1 class="hero-title">
+                JERO<br>
+                <span class="outline">SNEAK</span><br>
+                <span class="accent">ERS</span>
+            </h1>
+            <p class="hero-sub">Originales · Nuevos & Usados</p>
+            <div class="hero-btns">
+                <a href="#catalogo" class="btn-primary">Ver Catálogo</a>
+                <a href="#contacto" class="btn-outline">Contactar</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="hero-glow g1"></div>
+            <div class="hero-glow g2"></div>
+            <div class="hero-glow g3"></div>
+            <div class="hero-bg-text">KICKS</div>
+            <img src="https://i.postimg.cc/0NLTRD5y/logo222.png" alt="JeroSneakers" class="hero-logo-main" onerror="this.style.display='none';">
+            <div class="hero-line"></div>
+        </div>
+    </section>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="ticker" id="ticker">
+            <div class="stat"><span class="stat-num">3.6K</span><span class="stat-label">Seguidores</span></div>
+            <div class="stat"><span class="stat-num">28</span><span class="stat-label">Publicaciones</span></div>
+            <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Originales</span></div>
+            <div class="stat"><span class="stat-num">Nike</span><span class="stat-label">/ Jordan / SB</span></div>
+            <div class="stat"><span class="stat-num">🔥</span><span class="stat-label">Nuevos & Usados</span></div>
+            <div class="stat"><span class="stat-num">3.6K</span><span class="stat-label">Seguidores</span></div>
+            <div class="stat"><span class="stat-num">28</span><span class="stat-label">Publicaciones</span></div>
+            <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Originales</span></div>
+            <div class="stat"><span class="stat-num">Nike</span><span class="stat-label">/ Jordan / SB</span></div>
+            <div class="stat"><span class="stat-num">🔥</span><span class="stat-label">Nuevos & Usados</span></div>
+        </div>
+    </div>
+
+    <!-- CATALOG -->
+    <section id="catalogo">
+        <div class="section-header reveal">
+            <h2 class="section-title">
+                NUESTROS
+                <span class="line2">DROPS</span>
+            </h2>
+            <p class="section-note">Consultá disponibilidad<br>por Instagram o WhatsApp</p>
+        </div>
+
+        <div class="filters reveal">
+            <button class="filter-btn active" onclick="filterCards(this, 'all')">Todos</button>
+            <button class="filter-btn" onclick="filterCards(this, 'new')">Nuevos</button>
+            <button class="filter-btn" onclick="filterCards(this, 'used')">Usados</button>
+        </div>
+
+        <div class="sneaker-grid" id="grid">
+
+            <!-- Producto 1 -->
+            <div class="sneaker-card reveal" data-cat="nike new">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Air Force 1 Supreme White" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-new">Nuevo</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Nike</p>
+                    <p class="card-name">Air Force 1 Supreme White</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 9 / 10 / 11</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="sneaker-card reveal" data-cat="jordan used">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Air Jordan 3 Retro" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-used">Usado</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Jordan</p>
+                    <p class="card-name">Air Jordan 3 Retro</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 10</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="sneaker-card reveal" data-cat="nike used">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Air Jordan 3 Camo" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-used">Usado</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Nike</p>
+                    <p class="card-name">Air Jordan 3 Camo</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 9.5</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="sneaker-card reveal" data-cat="nike sb used">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1597045566677-8ef032bb08e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dunk High Gorge Green" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-used">Usado</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Nike SB</p>
+                    <p class="card-name">Dunk High Gorge Green</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 10 / 10.5</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="sneaker-card reveal" data-cat="nike new">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Vomero 5 Silver Red" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-new">Nuevo</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Nike</p>
+                    <p class="card-name">Vomero 5 Silver Red</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 8.5 / 9 / 10</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="sneaker-card reveal" data-cat="nike sb used">
+                <div class="card-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1600185365926-3a2ce2cdb9eb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Dunk Low Brown Tan" loading="lazy" onerror="this.closest('.sneaker-card').remove()">
+                    <span class="card-badge badge-used">Usado</span>
+                </div>
+                <div class="card-info">
+                    <p class="card-brand">Nike SB</p>
+                    <p class="card-name">Dunk Low Brown Tan</p>
+                    <div class="card-footer">
+                        <span class="card-price">Consultar</span>
+                        <span class="card-size">US 9</span>
+                    </div>
+                </div>
+                <a href="#contacto" class="card-cta">→ Consultar precio</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="nosotros">
+        <div class="about-visual reveal">
+            <div class="about-logo-wrap">
+                <img src="https://i.postimg.cc/zB11CRcc/lgo2322323.png" alt="Pasión por las Kicks" onerror="this.parentElement.style.display='none';">
+            </div>
+        </div>
+        <div class="about-content reveal">
+            <p class="about-eyebrow">// Quiénes Somos</p>
+            <h2 class="about-title">
+                PASIÓN<br>
+                <span class="outline">POR LAS</span><br>
+                <span class="accent">KICKS</span>
+            </h2>
+            <p class="about-body">
+                Somos <strong>JeroSneakers</strong>, una cuenta dedicada a la cultura del sneaker y la moda urbana. Compramos, vendemos y conseguimos zapatillas originales — nuevas y usadas — de las marcas más codiciadas del mercado.
+            </p>
+            <p class="about-body">
+                Cada par pasa por nuestra verificación de autenticidad. Si lo tiene Jero, es original. Punto.
+            </p>
+            <div class="about-tags">
+                <span class="tag">100% Originales</span>
+                <span class="tag">Nike</span>
+                <span class="tag">Jordan</span>
+                <span class="tag">Nike SB</span>
+                <span class="tag">Envíos</span>
+                <span class="tag">Diseño & Moda</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contacto">
+        <h2 class="contact-title reveal">
+            HABLEMOS<br><span>SNEAKERS</span>
+        </h2>
+        <p class="contact-sub reveal">Consultá stock, tallas y precios</p>
+        <div class="contact-links reveal">
+            <a href="https://www.instagram.com/jerosneakers" target="_blank" class="contact-link ig">
+                <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                @jerosneakers
+            </a>
+            <a href="https://wa.me/549XXXXXXXXXX" target="_blank" class="contact-link wa">
+                <svg width="22" height="22" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                WhatsApp
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-logo">Jero<span>Sneakers</span></div>
+        <p class="footer-copy">© 2026 · Diseño & Moda · Jeronimo Beber</p>
+        <a href="https://www.instagram.com/jerosneakers" class="footer-ig" target="_blank">@jerosneakers</a>
+    </footer>
+
+    <script>
+        // Custom cursor épico
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX - 7 + 'px';
+            cursor.style.top = e.clientY - 7 + 'px';
+        });
+        document.querySelectorAll('a, button, .sneaker-card, .filter-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Scroll reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('visible');
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Filter function
+        function filterCards(btn, cat) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.sneaker-card').forEach(card => {
+                if (cat === 'all' || card.dataset.cat.includes(cat)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
